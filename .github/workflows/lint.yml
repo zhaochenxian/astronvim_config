@@ -1,0 +1,43 @@
+name: Lint
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Install selene and stylua
+        run: |
+          cargo install selene
+          cargo install stylua
+
+      - name: Run Selene (static analysis)
+        run: selene .
+
+      - name: Run Stylua check
+        run: stylua --check . || true
+
+      # Optional: format and push back (disabled by default)
+      #- name: Apply stylua and push
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  run: |
+      #    stylua .
+      #    git config user.name "github-actions"
+      #    git config user.email "github-actions@github.com"
+      #    git add -A
+      #    git commit -m "style: apply stylua (CI)" || echo "no changes"
+      #    git push
