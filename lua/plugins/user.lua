@@ -1,4 +1,7 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+-- NOTE: This file contains example plugin specs. It may be disabled by a
+-- short-circuit. To enable, remove the disabling line and adjust examples
+-- to your needs. The table below shows common patterns for adding or
+-- overriding plugins when using `lazy.nvim`.
 
 -- You can also add or configure plugins by creating files in this `plugins/` folder
 -- PLEASE REMOVE THE EXAMPLES YOU HAVE NO INTEREST IN BEFORE ENABLING THIS FILE

@@ -1,6 +1,6 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
--- Customize Treesitter
+-- treesitter.lua
+-- Treesitter parser configuration. List parsers you commonly use here.
+-- Prefer keeping this list focused to reduce install time and maintenance.
 
 ---@type LazySpec
 return {

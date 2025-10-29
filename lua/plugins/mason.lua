@@ -1,6 +1,8 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
--- Customize Mason
+-- mason.lua
+-- Mason / mason-tool-installer config. Declare the set of external tools
+-- (LSPs, formatters, linters, debuggers) you want guaranteed to be
+-- installed on developer machines. Keep this list minimal and aligned with
+-- the language tools used in `lua/plugins/*`.
 
 ---@type LazySpec
 return {

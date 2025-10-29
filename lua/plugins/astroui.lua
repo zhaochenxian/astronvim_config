@@ -1,9 +1,7 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
--- AstroUI provides the basis for configuring the AstroNvim User Interface
--- Configuration documentation can be found with `:h astroui`
--- NOTE: We highly recommend setting up the Lua Language Server (`:LspInstall lua_ls`)
---       as this provides autocomplete and documentation while editing
+-- astroui.lua
+-- UI configuration (colorscheme, highlights, icons) for AstroNvim. Keep visual
+-- preferences here; don't place machine-specific secrets or paths in this file.
+-- Documentation: `:h astroui`.
 
 ---@type LazySpec
 return {
