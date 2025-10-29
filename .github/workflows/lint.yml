@@ -28,12 +28,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-
 
-      - name: Setup Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
+      - name: Install Rust toolchain (rustup)
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          # add cargo bin to PATH for remaining steps using $GITHUB_PATH (recommended)
+          echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
+        shell: bash
 
       - name: Install selene and stylua (if missing)
         run: |
@@ -77,12 +77,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cargo-
 
-      - name: Setup Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          profile: minimal
-          override: true
+      - name: Install Rust toolchain (rustup)
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
+        shell: bash
 
       - name: Install stylua (if missing)
         run: |
