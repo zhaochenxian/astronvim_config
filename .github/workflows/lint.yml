@@ -13,11 +13,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
+      - name: Install Rust toolchain (rustup)
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          # add cargo bin to PATH for remaining steps using $GITHUB_PATH (recommended)
+          echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
+        shell: bash
 
       - name: Install selene and stylua
         run: |
