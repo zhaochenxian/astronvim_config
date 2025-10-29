@@ -15,15 +15,19 @@ return {
       ensure_installed = {
         -- install language servers
         "lua-language-server",
+        "clangd",
+        "pyright",
 
         -- install formatters
         "stylua",
 
         -- install debuggers
         "debugpy",
+        "codelldb",
 
         -- install any other package
         "tree-sitter-cli",
+        "bash-language-server",
       },
     },
   },
