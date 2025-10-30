@@ -11,8 +11,9 @@
 return {
 
   -- == Examples of Adding Plugins ==
-
   "andweeb/presence.nvim",
+  -- Note: neo-tree is used in this config (nvim-neo-tree/neo-tree.nvim).
+  -- nvim-tree was removed to avoid duplication with neo-tree.
   {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
