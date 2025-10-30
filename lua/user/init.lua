@@ -3,7 +3,7 @@
 -- This file is loaded (safely) by `lua/polish.lua` if present.
 
 -- Example: simple keymap
-vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>", { desc = "Toggle NvimTree" })
+-- No custom file-explorer mapping here: neo-tree is already configured with <leader>e in the main config.
 
 -- Example: format on save for lua files (only run if LSP/format available)
 vim.api.nvim_create_autocmd("BufWritePre", {
