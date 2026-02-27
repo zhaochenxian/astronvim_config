@@ -1,4 +1,4 @@
--- polish.luaif true then return end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+-- polish.lua
 
 -- This file runs last in the setup process. Put machine/user specific
 

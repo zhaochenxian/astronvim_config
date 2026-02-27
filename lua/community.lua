@@ -14,7 +14,6 @@ return {
   { import = "astrocommunity.recipes.vscode" },
 
   -- 导入与 Copilot 和 nvim-cmp 集成的插件
-  { import = "astrocommunity.completion.copilot-vim-cmp" },
 
   -- 导入 blink-cmp 插件及其扩展模块
   { import = "astrocommunity.completion.blink-cmp" },
