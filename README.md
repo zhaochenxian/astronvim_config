@@ -63,3 +63,23 @@ vim.g.python_path = "C:/path/to/your/python.exe" -- Windows 示例
 
 上面的配置会被 `lua/plugins/dap.lua` 中的适配逻辑优先使用（该逻辑会回退到环境变量 `PYTHON_EXECUTABLE`、系统 `python` 可执行路径，或字符串 `"python"`）。
 
+
+
+---
+
+## 🤖 CI/CD
+
+GitHub Actions 工作流会自动检查：
+
+- ✅ **Lua 代码质量** (selene)
+- ✅ **Lua 代码格式** (stylua)
+- 🔄 **自动创建格式化 PR** (push 到 main 时)
+
+**其他语言格式化由本地 Neovim 处理：**
+- Python: black + isort
+- JS/TS/JSON: prettier
+- Markdown: markdownlint
+- YAML: yamllint
+- Shell: shfmt
+
+---
