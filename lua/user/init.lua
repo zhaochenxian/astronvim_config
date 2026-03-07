@@ -2,6 +2,14 @@
 -- Example user customizations. Put machine or personal settings here.
 -- This file is loaded (safely) by `lua/polish.lua` if present.
 
+-- ============================================================================
+-- Conda Python Configuration
+-- ============================================================================
+-- Set Python path for DAP debugger and LSP
+-- Using conda base environment
+vim.g.python_path = vim.fn.expand("~/miniconda/bin/python")
+vim.g.python3_host_prog = vim.fn.expand("~/miniconda/bin/python")
+
 -- Example: simple keymap
 -- No custom file-explorer mapping here: neo-tree is already configured with <leader>e in the main config.
 
