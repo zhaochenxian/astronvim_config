@@ -1,8 +1,8 @@
 std = "neovim"
 
 [rules]
-global_usage = "allow"
-if_same_then_else = "allow"
-incorrect_standard_library_use = "allow"
-mixed_table = "allow"
+global_usage = "disallow"
+if_same_then_else = "disallow"
+incorrect_standard_library_use = "disallow"
+mixed_table = "disallow"
 multiple_statements = "allow"

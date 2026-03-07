@@ -13,21 +13,44 @@ return {
     opts = {
       -- Make sure to use the names found in `:Mason`
       ensure_installed = {
-        -- install language servers
-        "lua-language-server",
-        "clangd",
-        "pyright",
+        -- === Core Language Servers ===
+        -- 必需的语言服务器
+        "lua-language-server",    -- Lua development
+        "clangd",                 -- C/C++ development
+        "pyright",                -- Python type checking
+        "bash-language-server",   -- Shell script support
 
-        -- install formatters
-        "stylua",
+        -- === Optional Language Servers ===
+        -- 取消下面的注释以启用更多语言支持
+        -- "typescript-language-server", -- TypeScript/JavaScript LSP
+        -- "gopls",                      -- Go language server
+        -- "rust-analyzer",              -- Rust language server
+        -- "vimls",                      -- VimScript
+        -- "jsonls",                     -- JSON with schemas
+        -- "yamlls",                     -- YAML with schema validation
 
-        -- install debuggers
-        "debugpy",
-        "codelldb",
+        -- === Formatters (Code Styling) ===
+        "stylua",                 -- Lua formatter
+        "black",                  -- Python formatter
+        "prettier",               -- JS/TS/JSON/YAML/Markdown formatter
+        "shfmt",                  -- Shell formatter
+        -- "isort",                -- Python import sorter (optional, handled via none-ls)
 
-        -- install any other package
-        "tree-sitter-cli",
-        "bash-language-server",
+        -- === Linters (Code Quality) ===
+        "eslint-lsp",             -- JavaScript/TypeScript linter
+        "pylint",                 -- Python linter
+        "flake8",                 -- Python style/error checker
+        "shellcheck",             -- Shell script checker
+
+        -- === Debuggers ===
+        "debugpy",                -- Python debugger
+        "codelldb",               -- C/C++ debugger (LLDB)
+        -- Debuggers for other languages can be added here:
+        -- "js-debug-adapter",     -- JavaScript debugger
+        -- "delve",                -- Go debugger
+
+        -- === Build Tools & Parsers ===
+        "tree-sitter-cli",        -- Treesitter parser generator
       },
     },
   },

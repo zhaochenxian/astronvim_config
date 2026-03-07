@@ -17,5 +17,27 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
+-- Performance analysis commands
+if pcall(require, "lazy") then
+  vim.api.nvim_create_user_command("LazyProfile", function()
+    require("lazy").stats()
+  end, { desc = "Show lazy.nvim plugin loading times" })
+
+  vim.api.nvim_create_user_command("LazyUpdate", function()
+    require("lazy").update()
+  end, { desc = "Update all lazy.nvim plugins" })
+end
+
+-- Treesitter parser statistics
+vim.api.nvim_create_user_command("TreesitterStats", function()
+  local parsers = require("nvim-treesitter.parsers").get_installed_parsers()
+  local count = 0
+  for _ in pairs(parsers) do count = count + 1 end
+  print(string.format("Installed Treesitter parsers: %d", count))
+  for parser in pairs(parsers) do
+    print("  - " .. parser)
+  end
+end, { desc = "Show installed treesitter parsers" })
+
 -- Return a table if you want to expose functions, otherwise nil is fine
 return {}

@@ -7,34 +7,27 @@ return {
   "nvim-treesitter/nvim-treesitter",
   opts = {
     ensure_installed = {
+      -- Core editors & vim
       "lua",
       "vim",
       "vimdoc",
-      -- Web development
+      -- Web development (most common)
       "javascript",
       "typescript",
       "tsx",
       "html",
       "css",
       "json",
-      "yaml",
-      -- Python
+      -- Backend & scripting
       "python",
-      -- C/C++
+      "bash",
+      -- System programming
       "c",
       "cpp",
-      -- Markdown & docs
+      -- Documentation & markup
       "markdown",
       "markdown_inline",
-      -- Shell
-      "bash",
-      -- Query languages
-      "sql",
-      "regex",
-      -- Other common languages
-      "go",
-      "rust",
-      "java",
+      "yaml",
     },
     -- Auto install parsers
     auto_install = true,
