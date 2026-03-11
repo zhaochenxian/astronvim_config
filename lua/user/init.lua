@@ -5,10 +5,15 @@
 -- ============================================================================
 -- Conda Python Configuration
 -- ============================================================================
--- Set Python path for DAP debugger and LSP
--- Using conda base environment
-vim.g.python_path = vim.fn.expand("~/miniconda/bin/python")
-vim.g.python3_host_prog = vim.fn.expand("~/miniconda/bin/python")
+-- Keep Neovim provider stable even when project envs switch dynamically.
+local nvim_py = vim.fn.expand "~/miniconda/envs/neovim/bin/python"
+local base_py = vim.fn.expand "~/miniconda/bin/python"
+
+-- Fixed Python provider for pynvim-based plugins.
+vim.g.python3_host_prog = (vim.fn.executable(nvim_py) == 1) and nvim_py or base_py
+
+-- Default Python for DAP/LSP; can be overridden dynamically by venv-selector.
+vim.g.python_path = vim.g.python3_host_prog
 
 -- Example: simple keymap
 -- No custom file-explorer mapping here: neo-tree is already configured with <leader>e in the main config.
