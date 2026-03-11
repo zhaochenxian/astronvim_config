@@ -38,11 +38,23 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      -- "pyright"
+      "pyright",  -- Enable Python language server
     },
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
     config = {
+      -- Configure Pyright for Python development
+      pyright = {
+        settings = {
+          python = {
+            -- pythonPath is managed dynamically by venv-selector via on_venv_activate_callback.
+            analysis = {
+              typeCheckingMode = "basic",
+              autoImportCompletions = true,
+            },
+          },
+        },
+      },
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
     },
     -- customize how language servers are attached

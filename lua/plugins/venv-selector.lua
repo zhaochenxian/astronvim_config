@@ -28,6 +28,16 @@ return {
             local venv_path = vs.venv()
             local env_name = venv_path and vim.fn.fnamemodify(venv_path, ":t") or nil
 
+            if venv_path and vim.fn.executable(venv_path) == 1 then
+              -- Notify all active Pyright clients of the new python interpreter.
+              for _, client in ipairs(vim.lsp.get_clients { name = "pyright" }) do
+                client.config.settings = vim.tbl_deep_extend("force", client.config.settings or {}, {
+                  python = { pythonPath = venv_path },
+                })
+                client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+              end
+            end
+
             if vim.env.CONDA_PREFIX and env_name and not vim.env.VIRTUAL_ENV then
               vim.env.CONDA_DEFAULT_ENV = env_name
             elseif vim.env.VIRTUAL_ENV then

@@ -1,24 +1,26 @@
 -- dap.lua
--- Configuration for nvim-dap. This file configures the python adapter.
--- Guidelines:
--- - Avoid hardcoding machine-specific paths. Prefer setting `vim.g.python_path`
---   in `lua/user/init.lua` or an environment variable, or rely on `exepath("python")`.
--- - If you need a different python executable (e.g., conda env), set
---   `vim.g.python_path = '/path/to/python'` in your local `lua/user/init.lua`.
+-- Python DAP configuration. Python path comes from venv-selector at runtime.
 
 return {
   "mfussenegger/nvim-dap",
   config = function()
     local dap = require "dap"
 
-    -- resolve python executable: prefer user override, then env var, then system python
-    local python_exe = vim.g.python_path or vim.env.PYTHON_EXECUTABLE or vim.fn.exepath "python" or "python"
+    -- Always ask venv-selector for the current python; fall back to active env or system.
+    local function current_python()
+      local ok, vs = pcall(require, "venv-selector")
+      if ok then
+        local py = vs.venv()
+        if py and py ~= "" and vim.fn.executable(py) == 1 then return py end
+      end
+      local fallback = vim.env.VIRTUAL_ENV or vim.env.CONDA_PREFIX
+      if fallback then return fallback .. "/bin/python" end
+      return vim.fn.exepath("python3") or "python"
+    end
 
-    dap.adapters.python = {
-      type = "executable",
-      command = python_exe,
-      args = { "-m", "debugpy.adapter" },
-    }
+    dap.adapters.python = function(callback, _)
+      callback { type = "executable", command = current_python(), args = { "-m", "debugpy.adapter" } }
+    end
 
     dap.configurations.python = {
       {
@@ -26,8 +28,7 @@ return {
         request = "launch",
         name = "调试 Python 文件",
         program = "${file}",
-        -- use resolved python executable; users can override via `vim.g.python_path`
-        pythonPath = python_exe,
+        pythonPath = current_python,
       },
     }
   end,

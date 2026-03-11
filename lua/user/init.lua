@@ -11,13 +11,21 @@ end
 
 local function detect_conda_root()
   local candidates = {
-    vim.env.CONDA_PREFIX,
     vim.env.MAMBA_ROOT_PREFIX,
     "~/miniconda",
     "~/miniconda3",
     "~/anaconda3",
     "~/opt/miniconda3",
   }
+
+  -- If CONDA_PREFIX points to an env, normalize it back to conda root.
+  if vim.env.CONDA_PREFIX and vim.env.CONDA_PREFIX ~= "" then
+    local from_prefix = vim.env.CONDA_PREFIX
+    if from_prefix:match "/envs/[^/]+$" then
+      from_prefix = from_prefix:gsub("/envs/[^/]+$", "")
+    end
+    table.insert(candidates, 1, from_prefix)
+  end
 
   local conda_exe = vim.fn.exepath "conda"
   if conda_exe ~= "" then
@@ -52,13 +60,25 @@ local base_py = first_existing {
 -- Fixed Python provider for pynvim-based plugins.
 vim.g.python3_host_prog = (vim.fn.executable(nvim_py) == 1) and nvim_py or base_py
 
--- Default Python for DAP/LSP; can be overridden dynamically by venv-selector.
-vim.g.python_path = vim.g.python3_host_prog
+-- Python path for DAP/LSP: directly use the active conda env or venv.
+-- CONDA_PREFIX is already set by conda to the active env directory.
+local function sync_python_path_from_env()
+  local active = vim.env.VIRTUAL_ENV or vim.env.CONDA_PREFIX
+  vim.g.python_path = active and (active .. "/bin/python") or vim.g.python3_host_prog
+end
 
--- Normalize conda env vars so AstroUI's default virtual_env component can display them.
+sync_python_path_from_env()
+
+-- Normalize conda env vars so AstroUI's virtual_env component can display them.
 if vim.env.CONDA_PREFIX and not vim.env.CONDA_DEFAULT_ENV then
   vim.env.CONDA_DEFAULT_ENV = vim.fn.fnamemodify(vim.env.CONDA_PREFIX, ":t")
 end
+
+-- Re-sync after plugins load in case any overwrite python_path.
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function() vim.defer_fn(sync_python_path_from_env, 200) end,
+})
 
 -- Example: simple keymap
 -- No custom file-explorer mapping here: neo-tree is already configured with <leader>e in the main config.
