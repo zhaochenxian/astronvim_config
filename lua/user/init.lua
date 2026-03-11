@@ -2,18 +2,63 @@
 -- Example user customizations. Put machine or personal settings here.
 -- This file is loaded (safely) by `lua/polish.lua` if present.
 
--- ============================================================================
--- Conda Python Configuration
--- ============================================================================
--- Keep Neovim provider stable even when project envs switch dynamically.
-local nvim_py = vim.fn.expand "~/miniconda/envs/neovim/bin/python"
-local base_py = vim.fn.expand "~/miniconda/bin/python"
+local function first_existing(paths)
+  for _, path in ipairs(paths) do
+    local expanded = vim.fn.expand(path)
+    if vim.fn.executable(expanded) == 1 or vim.uv.fs_stat(expanded) then return expanded end
+  end
+end
+
+local function detect_conda_root()
+  local candidates = {
+    vim.env.CONDA_PREFIX,
+    vim.env.MAMBA_ROOT_PREFIX,
+    "~/miniconda",
+    "~/miniconda3",
+    "~/anaconda3",
+    "~/opt/miniconda3",
+  }
+
+  local conda_exe = vim.fn.exepath "conda"
+  if conda_exe ~= "" then
+    local inferred = vim.fn.fnamemodify(conda_exe, ":h:h")
+    table.insert(candidates, 1, inferred)
+  end
+
+  for _, candidate in ipairs(candidates) do
+    if candidate and candidate ~= "" then
+      local expanded = vim.fn.expand(candidate)
+      if vim.uv.fs_stat(expanded) then return expanded end
+    end
+  end
+end
+
+local conda_root = detect_conda_root()
+if conda_root then vim.env.CONDA_ROOT = conda_root end
+
+local nvim_py = first_existing {
+  "$CONDA_ROOT/envs/neovim/bin/python",
+  "~/miniconda/envs/neovim/bin/python",
+  "~/miniconda3/envs/neovim/bin/python",
+}
+local base_py = first_existing {
+  "$CONDA_ROOT/bin/python",
+  "~/miniconda/bin/python",
+  "~/miniconda3/bin/python",
+  vim.fn.exepath "python3",
+  vim.fn.exepath "python",
+}
 
 -- Fixed Python provider for pynvim-based plugins.
 vim.g.python3_host_prog = (vim.fn.executable(nvim_py) == 1) and nvim_py or base_py
 
 -- Default Python for DAP/LSP; can be overridden dynamically by venv-selector.
 vim.g.python_path = vim.g.python3_host_prog
+
+-- Normalize conda env vars so AstroUI's default virtual_env component can display them.
+if vim.env.CONDA_PREFIX and not vim.env.CONDA_DEFAULT_ENV then
+  vim.env.CONDA_DEFAULT_ENV = vim.fn.fnamemodify(vim.env.CONDA_PREFIX, ":t")
+end
 
 -- Example: simple keymap
 -- No custom file-explorer mapping here: neo-tree is already configured with <leader>e in the main config.
